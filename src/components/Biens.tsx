@@ -6,7 +6,27 @@ export default function Biens() {
   const [biens, setBiens] = useState<Bien[]>([]);
   const [showForm, setShowForm] = useState(false);
 
-  // Ajout d’un bien avec incrément automatique de l’ID
+  import supabase from '../supabaseClient'; 
+  const [biens, setBiens] = useState<Bien[]>([]);
+  import { useEffect } from 'react';
+
+  useEffect(() => {
+    const fetchBiens = async () => {
+      const { data, error } = await supabase
+        .from('Biens immobiliers')
+        .select('*');
+  
+      if (error) {
+        console.error('Erreur lors de la récupération des biens:', error);
+      } else {
+        console.log('Biens récupérés:', data);
+        setBiens(data || []);
+      }
+    };
+  
+    fetchBiens();
+  }, []);
+   // Ajout d’un bien avec incrément automatique de l’ID
   const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;

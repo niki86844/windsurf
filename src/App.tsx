@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import ReajustementLetterEditor from "./components/ReajustementLetterEditor";
 import LetterTemplatesPage from "./components/LetterTemplatesPage";
 import TestPage from "./components/TestPage";
+import PropertyManager from './components/PropertyManager';
+import TenantManager from './components/TenantManager';
+import RentRevisionManager from './components/RentRevisionManager';
+import RapprochementBancaire from './components/RapprochementBancaire';
 
 // Types
 export type Bien = {
@@ -37,19 +41,26 @@ const locatairesExemple: Locataire[] = [
 
 // Composant principal avec navigation simple
 export default function App() {
-  const [page, setPage] = useState<'biens'|'loyers'|'reajustement'|'templates'|'test'>('loyers');
+  const [page, setPage] = useState<'biens'|'loyers'|'reajustement'|'templates'|'test'|'properties'|'tenants'|'revisions'|'rapprochement'>('loyers');
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <nav className="mb-8 flex gap-4">
-        <button onClick={() => setPage('biens')} className={page==='biens' ? 'font-bold underline' : ''}>Biens</button>
+        <button onClick={() => setPage('biens')} className={page==='biens' ? 'font-bold underline' : ''}>Biens (démo)</button>
+        <button onClick={() => setPage('properties')} className={page==='properties' ? 'font-bold underline' : ''}>Biens (Supabase)</button>
         <button onClick={() => setPage('loyers')} className={page==='loyers' ? 'font-bold underline' : ''}>Paramétrage des Loyers</button>
-        <button onClick={() => setPage('reajustement')} className={page==='reajustement' ? 'font-bold underline' : ''}>Réajustement des Loyers</button>
+        <button onClick={() => setPage('revisions')} className={page==='revisions' ? 'font-bold underline' : ''}>Révisions de Loyers</button>
+        <button onClick={() => setPage('reajustement')} className={page==='reajustement' ? 'font-bold underline' : ''}>Réajustement (éditeur)</button>
+        <button onClick={() => setPage('tenants')} className={page==='tenants' ? 'font-bold underline' : ''}>Locataires</button>
         <button onClick={() => setPage('templates')} className={page==='templates' ? 'font-bold underline' : ''}>Modèles de lettre</button>
         <button onClick={() => setPage('test')} className={page==='test' ? 'font-bold underline' : ''}>TestPage</button>
+        <button onClick={() => setPage('rapprochement')} className={page==='rapprochement' ? 'font-bold underline' : ''}>Rapprochement bancaire</button>
       </nav>
       <div style={{ background: 'yellow', color: 'black', padding: '0.5rem' }}>
         DEBUG: NAVIGATION ACTIVE – page = {page}
       </div>
+      {page === 'properties' && <PropertyManager />}
+      {page === 'tenants' && <TenantManager />}
+      {page === 'revisions' && <RentRevisionManager />}
       {page === 'loyers' ? (
         <Loyers biens={biensExemple} locataires={locatairesExemple} />
       ) : page === 'biens' ? (
@@ -60,6 +71,8 @@ export default function App() {
         <LetterTemplatesPage />
       ) : page === 'test' ? (
         <TestPage />
+      ) : page === 'rapprochement' ? (
+        <RapprochementBancaire />
       ) : null}
     </div>
   );
@@ -226,4 +239,3 @@ function WizardContrat({ biens, locataires, contrat, onClose, onSave }: {
     </div>
   );
 }
-
